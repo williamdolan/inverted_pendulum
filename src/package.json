@@ -1,0 +1,19 @@
+{
+  "name": "vention",
+  "version": "1.0.0",
+  "description": "test app",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "mqtt": "^3.0.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "William Dolan",
+  "license": "ISC"
+}
