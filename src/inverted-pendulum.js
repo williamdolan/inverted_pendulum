@@ -116,7 +116,7 @@ function InvertedPendulum() {
     return self.state;
   }
 
-  this.check_neighbour = function(neighbour) {
+  this.checkNeighbour = function(neighbour) {
     if (neighbour && Math.abs(self.x - neighbour) < self.threshold)
     {
       console.log("Neighbour is too close");

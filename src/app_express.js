@@ -14,6 +14,7 @@ var p = new ip.InvertedPendulum();
 //var myArgs = process.argv.slice(2);
 //console.log('myArgs: ', myArgs);
 var port = process.argv[2] || 8080;
+
 console.log('port: ', port)
 
 app.get('/', function (req, res) {
@@ -58,11 +59,12 @@ app.get('/state', function(req, res) {
 
 app.listen(port);
 
-var mqtt_client  = mqtt.connect('tcp://mqtt:1883', {clean: false, clientId: "node_" + port});
+var mqtt_client  = mqtt.connect('tcp://mqtt:1883');
 mqtt_client.on('connect', function () {
   mqtt_client.subscribe('command', {qos: 1}, function (err) {
     if (!err) {
       console.log("Connected to broker");
+      mqtt_client.publish('status', 'Hello', {qos:1})
     }
   })
 })
@@ -121,4 +123,4 @@ var getNeighbours = function()
   }
 }
 
-setInterval(getNeighbours, 5000);
+setInterval(getNeighbours, 500);
