@@ -89,7 +89,7 @@ var checkNeighbour = function(err, response, body)
     console.log(body.position);
     if (p.checkNeighbour(body.position))
     {
-      mqtt_client.publish('command', 'STOP', {qos: 1});
+      //mqtt_client.publish('command', 'STOP', {qos: 1});
       console.log("Neighbour too close, sending stop");
     }
   }
