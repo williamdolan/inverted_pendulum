@@ -8,4 +8,4 @@ RUN npm install connect express mqtt cors
 
 COPY src .
 
-CMD [ "node", "app_express.js"]
+CMD [ "node", "ui.js"]
