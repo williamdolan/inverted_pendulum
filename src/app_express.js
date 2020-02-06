@@ -1,9 +1,10 @@
 const express = require('express')
 const mqtt = require('mqtt')
+const cors = require('cors')
 
 const app = express();
 app.use(express.json());
-
+app.use(cors({origin: '*'}));
 const request = require('request');
 
 var ip = require ("./inverted-pendulum");
@@ -25,6 +26,7 @@ app.post('/', function (req, res) {
 app.post('/config', function (req, res) {
     var config = req.body;
     console.log(config);
+    console.log(config.position);
     p.config(config);
     res.send("ok");
 });
@@ -56,11 +58,11 @@ app.get('/state', function(req, res) {
 
 app.listen(port);
 
-var mqtt_client  = mqtt.connect('tcp://localhost:1883', {clean: false, clientId: "node_" + port});
+var mqtt_client  = mqtt.connect('tcp://mqtt:1883', {clean: false, clientId: "node_" + port});
 mqtt_client.on('connect', function () {
   mqtt_client.subscribe('command', {qos: 1}, function (err) {
     if (!err) {
-      mqtt_client.publish('test', 'Hello mqtt', {qos: 1});
+      console.log("Connected to broker");
     }
   })
 })
@@ -92,7 +94,10 @@ var checkNeighbour = function(err, response, body)
   if (body)
   {
     console.log(body.position);
-  //  console.log(body);
+    if (p.checkNeighbour(body.position))
+    {
+      mqtt_client.publish('command', 'STOP', {qos: 1});
+    }
   }
 }
 

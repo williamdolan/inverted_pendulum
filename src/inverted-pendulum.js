@@ -85,7 +85,7 @@ function InvertedPendulum() {
     //console.log("self.xd " + self.xd);
     self.x = self.x + self.xd * self.dt;
     //console.log("self.x " + self.x);
-    var wind_effect = self.wind_factor * Math.random() * 0.01;
+    var wind_effect = self.wind_factor * Math.random() * 0.001;
     //console.log("wind effect " + wind_effect);
     var thetadd = ((M + m)*m*l*g*theta - m*l*force) /
                   (J * (M + m)+ (m * M * l*l)) + wind_effect;//
