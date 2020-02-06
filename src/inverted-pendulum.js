@@ -39,6 +39,7 @@ function InvertedPendulum() {
       self.dt = config.time_step;
       self.neighbourA = config.neighbourA;
       self.neighbourB = config.neighbourB;
+      self.threshold = config.threshold;
     }
   }
 
@@ -117,10 +118,16 @@ function InvertedPendulum() {
   }
 
   this.checkNeighbour = function(neighbour) {
-    if (neighbour && Math.abs(self.x - neighbour) < self.threshold)
+    console.log("threshold = " + self.threshold);
+    console.log("neighbour = " + neighbour);
+    console.log("self.x = " + self.x);
+    if (neighbour && (Math.abs(self.x - neighbour) < self.threshold))
     {
       console.log("Neighbour is too close");
       return true;
+    }
+    else {
+      return false;
     }
   }
 

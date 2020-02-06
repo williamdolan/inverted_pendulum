@@ -32,19 +32,6 @@ app.post('/config', function (req, res) {
     res.send("ok");
 });
 
-app.post('/start', function (req, res) {
-    p.start();
-    res.send("ok");
-});
-
-app.post('/stop', function (req, res) {
-    p.stop();
-});
-
-app.post('/reset', function (req, res) {
-    //p.reset();
-});
-
 app.get('/position', function(req, res) {
     console.log("GET position received");
     var obj = {'theta': p.getAngle(),
@@ -69,6 +56,8 @@ mqtt_client.on('connect', function () {
   })
 })
 
+var neighbour_interval;
+
 mqtt_client.on('message', function (topic, message) {
   // message is Buffer
   console.log(topic.toString(), " >> ", message.toString())
@@ -78,11 +67,13 @@ mqtt_client.on('message', function (topic, message) {
     {
       console.log("Got STOP");
       p.stop();
+      clearInterval(neighbour_interval);
     }
     if (message.toString() == "START")
     {
       console.log("Got START");
       p.start();
+      neighbour_interval = setInterval(getNeighbours, 1000);
     }
   }
 })
@@ -99,6 +90,7 @@ var checkNeighbour = function(err, response, body)
     if (p.checkNeighbour(body.position))
     {
       mqtt_client.publish('command', 'STOP', {qos: 1});
+      console.log("Neighbour too close, sending stop");
     }
   }
 }
@@ -122,5 +114,3 @@ var getNeighbours = function()
     }
   }
 }
-
-setInterval(getNeighbours, 500);
